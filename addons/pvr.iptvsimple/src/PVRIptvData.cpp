@@ -103,7 +103,7 @@ bool PVRIptvData::LoadEPG(time_t iStart, time_t iEnd)
 {
   if (m_strXMLTVUrl.IsEmpty())
   {
-    XBMC->Log(LOG_NOTICE, "EPG file path is not configured. EPG not loaded.");
+    //XBMC->Log(LOG_NOTICE, "EPG file path is not configured. EPG not loaded.");
     m_bEGPLoaded = true;
     return false;
   }
@@ -119,7 +119,7 @@ bool PVRIptvData::LoadEPG(time_t iStart, time_t iEnd)
     {
       break;
     }
-    XBMC->Log(LOG_ERROR, "Unable to load EPG file '%s':  file is missing or empty. :%dth try.", m_strXMLTVUrl.c_str(), ++iCount);
+    ////XBMC->Log(LOG_ERROR, "Unable to load EPG file '%s':  file is missing or empty. :%dth try.", m_strXMLTVUrl.c_str(), ++iCount);
     if (iCount < 3)
     {
       usleep(5 * 1000 * 1000); // sleep 5 sec before next try.
@@ -128,7 +128,7 @@ bool PVRIptvData::LoadEPG(time_t iStart, time_t iEnd)
   
   if (iReaded == 0)
   {
-    XBMC->Log(LOG_ERROR, "Unable to load EPG file '%s':  file is missing or empty. After %d tries.", m_strXMLTVUrl.c_str(), iCount);
+    ////XBMC->Log(LOG_ERROR, "Unable to load EPG file '%s':  file is missing or empty. After %d tries.", m_strXMLTVUrl.c_str(), iCount);
     m_bEGPLoaded = true;
     return false;
   }
@@ -140,7 +140,7 @@ bool PVRIptvData::LoadEPG(time_t iStart, time_t iEnd)
   {
     if (!GzipInflate(data, decompressed))
     {
-      XBMC->Log(LOG_ERROR, "Invalid EPG file '%s': unable to decompress file.", m_strXMLTVUrl.c_str());
+     // //XBMC->Log(LOG_ERROR, "Invalid EPG file '%s': unable to decompress file.", m_strXMLTVUrl.c_str());
       m_bEGPLoaded = true;
       return false;
     }
@@ -165,7 +165,7 @@ bool PVRIptvData::LoadEPG(time_t iStart, time_t iEnd)
       }
       else
       {
-        XBMC->Log(LOG_ERROR, "Invalid EPG file '%s': unable to parse file.", m_strXMLTVUrl.c_str());
+        //XBMC->Log(LOG_ERROR, "Invalid EPG file '%s': unable to parse file.", m_strXMLTVUrl.c_str());
         m_bEGPLoaded = true;
         return false;
       }
@@ -179,7 +179,7 @@ bool PVRIptvData::LoadEPG(time_t iStart, time_t iEnd)
   } 
   catch(parse_error p) 
   {
-    XBMC->Log(LOG_ERROR, "Unable parse EPG XML: %s", p.what());
+    //XBMC->Log(LOG_ERROR, "Unable parse EPG XML: %s", p.what());
     m_bEGPLoaded = true;
     return false;
   }
@@ -187,7 +187,7 @@ bool PVRIptvData::LoadEPG(time_t iStart, time_t iEnd)
   xml_node<> *pRootElement = xmlDoc.first_node("tv");
   if (!pRootElement)
   {
-    XBMC->Log(LOG_ERROR, "Invalid EPG XML: no <tv> tag found");
+    //XBMC->Log(LOG_ERROR, "Invalid EPG XML: no <tv> tag found");
     m_bEGPLoaded = true;
     return false;
   }
@@ -224,7 +224,7 @@ bool PVRIptvData::LoadEPG(time_t iStart, time_t iEnd)
 
   if (m_epg.size() == 0) 
   {
-    XBMC->Log(LOG_ERROR, "EPG channels not found.");
+    //XBMC->Log(LOG_ERROR, "EPG channels not found.");
     return false;
   }
   
@@ -300,7 +300,7 @@ bool PVRIptvData::LoadEPG(time_t iStart, time_t iEnd)
   xmlDoc.clear();
   m_bEGPLoaded = true;
 
-  XBMC->Log(LOG_NOTICE, "EPG Loaded.");
+  //XBMC->Log(LOG_NOTICE, "EPG Loaded.");
 
   return true;
 }
@@ -309,14 +309,14 @@ bool PVRIptvData::LoadPlayList(void)
 {
   if (m_strM3uUrl.IsEmpty())
   {
-    XBMC->Log(LOG_NOTICE, "Playlist file path is not configured. Channels not loaded.");
+    //XBMC->Log(LOG_NOTICE, "Playlist file path is not configured. Channels not loaded.");
     return false;
   }
 
   CStdString strPlaylistContent;
   if (!GetCachedFileContents(M3U_FILE_NAME, m_strM3uUrl, strPlaylistContent))
   {
-    XBMC->Log(LOG_ERROR, "Unable to load playlist file '%s':  file is missing or empty.", m_strM3uUrl.c_str());
+    //XBMC->Log(LOG_ERROR, "Unable to load playlist file '%s':  file is missing or empty.", m_strM3uUrl.c_str());
     return false;
   }
 
@@ -483,13 +483,13 @@ bool PVRIptvData::LoadPlayList(void)
 
   if (m_channels.size() == 0)
   {
-    XBMC->Log(LOG_ERROR, "Unable to load channels from file '%s':  file is corrupted.", m_strM3uUrl.c_str());
+    //XBMC->Log(LOG_ERROR, "Unable to load channels from file '%s':  file is corrupted.", m_strM3uUrl.c_str());
     return false;
   }
 
   ApplyChannelsLogos();
 
-  XBMC->Log(LOG_NOTICE, "Loaded %d channels.", m_channels.size());
+  //XBMC->Log(LOG_NOTICE, "Loaded %d channels.", m_channels.size());
   return true;
 }
 
